@@ -1,33 +1,38 @@
-
-
-命令：
+#### 1.docker 启动mysql 8.0.18
 
 ```
-docker run -p 3306:3306 --name mysql -v /usr/mydata/mysql/log:/var/log/mysql -v /usr/mydata/mysql/data:/var/lib/mysql -v /usr/mydata/mysql/conf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=123456 -d mysql:latest
+docker run -p 8806:3306 --name CL_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.18
 ```
 
 
 
-分析：
+#### 2.连接报错解决
 
+但是在本地用Navicat登录的时候，发现报错了。报错信息
+
+连接Docker启动的mysql出现：**ERROR 2059 (HY000): Authentication plugin 'caching_sha2_password' cannot be loaded**
+
+解决方案：
+
+##### 1.进入mysql容器
+
+```shell
+docker exec -it CL_mysql /bin/bash
 ```
 
-    docker run -d mysql:latest             以后台的方式运行 mysql 版本的镜像，生成一个容器。
-    --name mysql                           容器名为 mysql
-    -e MYSQL_ROOT_PASSWORD=123456          设置登陆密码为 123456，登陆用户为 root
-    -p 3306:3306                           将容器内部 3306 端口映射到 主机的 3306 端口，即通过 主机的 3306 可以访问容器的 3306 端口
-    -v /usr/mydata/mysql/log:/var/log/mysql    将容器的 日志文件夹 挂载到 主机的相应位置
-    -v /usr/mydata/mysql/data:/var/lib/mysql   将容器的 数据文件夹 挂载到 主机的相应位置
-    -v /usr/mydata/mysql/conf:/etc/mysql/conf.d   将容器的 自定义配置文件夹 挂载到主机的相应位置
-    
+##### 2.进入mysql
+
+```shell
+mysql -uroot -P 3306 -p
 ```
 
+##### 3.修改密码
 
+```sql
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
 
-
-
-查看容是否器启动
-
+flush privileges;
 ```
-docker ps -a
-```
+
+修改好了之后，再用Navicat登录就可以了。
+
