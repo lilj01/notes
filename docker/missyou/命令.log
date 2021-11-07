@@ -1,0 +1,5 @@
+制成镜像
+docker build -t missyou:v0.1 .
+
+运行
+docker run --name missyou_01 -p 8081:8081  -d missyou:v0.1
