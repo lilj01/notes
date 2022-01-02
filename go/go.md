@@ -1,16 +1,16 @@
-## 下载地址
+## 1.下载地址
 
 `https://studygolang.com/dl`
 
 
 
-## idea go plugin
+## 2. 插件  go 
 
 桌面版 `https://plugins.jetbrains.com/plugin/9568-go/versions`
 
 
 
-## 变量的定义
+## 3.变量的定义
 
 - 变量名在前，类型在后；
 
@@ -42,7 +42,7 @@
 
 
 
-## 内建变量类型
+## 4.内建变量类型
 
 - bool、string
 - 整数类型 前有u代表无符号整数 还可以规定长度，没有long类型(u)int  (u)int8   (u)int16   (u)int32   (u)int64   uintptr（指针）
@@ -69,7 +69,7 @@
 
 
 
-## 常量的定义
+## 5.常量的定义
 
 - go语言定义常量不做大写
 
@@ -124,7 +124,7 @@
 
   
 
-## 条件语句
+## 6.条件语句
 
 
 
@@ -208,7 +208,7 @@ func grade(score int) string {
 
 - for的条件里不需要括号
 - for的条件里可以省略初始条件，结束条件，递增表达式
-- 结束条件不写，死循环
+- 结束条件不写，死循环，没有while，可以用这种方法代替死循环
 
 
 
@@ -267,6 +267,125 @@ func printFile(filename string) {
 ```
 
 
+
+## 7.函数
+
+- 函数可以返回多个值
+- 函数返回多个值可以起名字
+- 仅用于非常简单的函数
+- 对于调用者而言没有区别
+- 没有重载，默认参数值可选参数等花哨说法
+- 有可变参数列表
+- 返回值类型写后面
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+	"reflect"
+	"runtime"
+)
+
+func main() {
+	/*函数*/
+	fmt.Println(eval(3, 4, "+"))
+	/*多返回值*/
+	i, err := eval2(3, 4, "x")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(i)
+	}
+
+	q, r := div(13, 3)
+	fmt.Println(q, r)
+
+	/*函数式编程*/
+	applyRes := apply(pow, 3, 4)
+	fmt.Println(applyRes)
+
+	/*匿名函数   go没有花哨的lambda写法*/
+	fmt.Println(apply(func(a, b int) int {
+		return int(math.Pow(float64(a), float64(b)))
+	}, 3, 4))
+
+	sum := sum(1, 2, 3, 4)
+	fmt.Println(sum)
+}
+
+func eval(a, b int, op string) int {
+	switch op {
+	case "+":
+		return a + b
+	case "-":
+		return a - b
+	case "*":
+		return a * b
+	case "/":
+		q, _ := div(a, b)
+		return q
+	default:
+		panic("unsupported op: " + op)
+	}
+}
+
+/*多返回值*/
+func eval2(a, b int, op string) (int, error) {
+	switch op {
+	case "+":
+		return a + b, nil
+	case "-":
+		return a - b, nil
+	case "*":
+		return a * b, nil
+	case "/":
+		q, _ := div(a, b)
+		return q, nil
+	default:
+		return 0, fmt.Errorf("unsupported op: %s", op)
+	}
+}
+
+func pow(a, b int) int {
+	return int(math.Pow(float64(a), float64(b)))
+}
+
+/*函数式编程*/
+func apply(op func(int, int) int, a, b int) int {
+	p := reflect.ValueOf(op).Pointer()
+	opFuncName := runtime.FuncForPC(p).Name()
+	fmt.Printf("calling function %s with args (%d,%d)\n", opFuncName, a, b)
+	return op(a, b)
+}
+
+//func div(a, b int) (int, int) {
+//	return a / b, a % b
+//}
+
+//func div(a, b int) (q, r int) {
+//	return a / b, a % b
+//}
+
+/*不建议这么写，代码多容易混淆*/
+func div(a, b int) (q, r int) {
+	q = a / b
+	r = a % b
+	return
+}
+
+/*可变参数*/
+func sum(numbers ...int) int {
+	s := 0
+	for i := range numbers {
+		s += numbers[i]
+	}
+	return s
+}
+```
 
 
 
