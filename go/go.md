@@ -123,3 +123,198 @@
   ```
 
   
+
+## 条件语句
+
+
+
+### if
+
+- if的条件里可以赋值
+- if的条件里赋值的变量作用域就在这个if语句里
+
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+)
+
+func main() {
+
+	readFile()
+	readFile2()
+	
+}
+
+func readFile(){
+	const filename = "abc.txt"
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println(err)
+	}else {
+		fmt.Printf("%s\n",contents)
+	}
+}
+
+/*if后的变量只在块内有效*/
+func readFile2(){
+	const filename = "abc.txt"
+	if contents, err := ioutil.ReadFile(filename); err == nil {
+		fmt.Printf("%s\n",contents)
+	}else {
+		fmt.Println(err)
+	}
+}
+
+```
+
+
+
+
+
+### switch
+
+- switch后可以没有表达式
+- switch可以自动break，出发使用fallthrough
+
+
+
+```go
+func grade(score int) string {
+	g := ""
+	switch {
+	case score < 0 || score > 100:
+		panic(fmt.Sprintf("wrong score: %d", score))
+	case score < 60:
+		g = "F"
+	case score < 80:
+		g = "C"
+	case score < 90:
+		g = "B"
+	case score <= 100:
+		g = "A"
+	default:
+		panic(fmt.Sprintf("wrong score: %d", score))
+	}
+	return g
+}
+```
+
+
+
+### for
+
+- for的条件里不需要括号
+- for的条件里可以省略初始条件，结束条件，递增表达式
+- 结束条件不写，死循环
+
+
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+
+	sum := 0
+	for i := 1; i <= 100; i++ {
+		sum += i
+	}
+	fmt.Printf("1到100的和为： %d\n", sum)
+
+	fmt.Println(
+		convertToBin(0),
+		convertToBin(5),
+		convertToBin(13))
+
+	printFile("abc.txt")
+}
+
+/**转二进制*/
+func convertToBin(n int) string {
+	if n == 0 {
+		return "0"
+	}
+	if n < 0 {
+		panic("error： n can't <0")
+	}
+	result := ""
+	for ; n > 0; n /= 2 {
+		lsb := n % 2
+		result = strconv.Itoa(lsb) + result
+	}
+	return result
+}
+
+func printFile(filename string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
