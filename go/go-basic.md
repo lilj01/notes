@@ -433,29 +433,83 @@ after pass_by_val：4
 
 
 
+## 9.数组
+
+
+
+### 数组的定义
+
+```go
+var arr1 [5]int
+arr2 := [3]int{1, 2, 3}
+arr3 := [...]int{4, 5, 6, 7}
+var grid [4][5]int
+
+fmt.Println(arr1, arr2, arr3, grid)
+```
+
+
+
+### 数组的遍历
+
+```go
+for i := 0; i < len(arr3); i++ {
+	fmt.Println(arr3[i])
+}
+
+for i := range arr3 {
+	fmt.Println(arr3[i])
+}
+
+for i, v := range arr3 {
+	fmt.Println(i, v)
+}
+
+for _, v := range arr3 {
+	fmt.Println(v)
+}
+```
+
+
+
+### 为什么使用range
+
+- 意义明确，美观
+- c++，没有类似能力
+- java、python：foreach，不能同时获取i,v
+
+
+
+### 数组是值类型（拷贝）
+
+传递过程中，不会影响原数值
+
+
+
+### 注意点
+
+- [10]int和[20]int是不同类型
+- 调用func f(arr [10]int)会拷贝数组，即值传递
+- 在go语言中一般不直接使用数组，使用切片
 
 
 
 
 
+## 10.切片(slice)
 
 
 
+### demo
+
+```
+arr:=[...]int{0,1,2,3,4,5,6,7}
+s:=arr[2:6]
+
+s的值为{2,3,4,5}
+```
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
