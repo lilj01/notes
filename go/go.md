@@ -391,17 +391,39 @@ func sum(numbers ...int) int {
 
 
 
+## 8.指针
+
+- go中，指针不能运算
+
+- go语言只有值传递一种方式，但是可以配合指针
+
+  ```go
+  var a int = 2
+  var pa *int = &a
+  *pa = 3
+  fmt.Println(a)
+  
+  a是3
+  ```
 
 
 
+### 参数传递
 
+```c++
+值传递，将结果拷贝一份到函数中，不影响原本的值
+void pass_by_val(int a){
+    a++;
+}
 
+引用传递，引用同一个变量，会影响原来的值
+void pass_by_ref(int& a){
+    a++;
+}
 
-
-
-
-
-
+after pass_by_val：3
+after pass_by_val：4
+```
 
 
 
