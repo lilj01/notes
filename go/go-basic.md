@@ -795,11 +795,19 @@ func lengthOfNoRepeatingSubStr(s string) int {
 
 
 
+## 12.字符和字符串处理
 
 
 
-
-
+- 使用range 遍历pos（位置），rune（go的char）对
+- 使用utf8.RuneCountInString获得字符数量 
+- 使用len获得字节长度
+- 使用[]byte获得字节
+- strings，常用操作
+- Fields，split，Join
+- Contains，Index
+- Tolower，ToUpper
+- Trim,TrimRight,TrimLeft
 
 
 
