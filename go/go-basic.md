@@ -511,5 +511,278 @@ s的值为{2,3,4,5}
 
 
 
+ ```go
+ package main
  
+ import "fmt"
+ 
+ func main() {
+ 
+ 	arr := [...]int{0, 1, 2, 3, 4, 5, 6, 7}
+ 	fmt.Println("arr[2:6]", arr[2:6])
+ 	fmt.Println("arr[:6]", arr[:6])
+ 	fmt.Println("arr[2:]", arr[2:])
+ 	fmt.Println("arr[:]", arr[:])
+ 
+ }
+ 
+ 结果：
+ arr[2:6] [2 3 4 5]
+ arr[:6] [0 1 2 3 4 5]   
+ arr[2:] [2 3 4 5 6 7]   
+ arr[:] [0 1 2 3 4 5 6 7]
+ ```
+
+
+
+```go
+arr := [...]int{0,1,2,3,4,5,6,7}
+s := arr[2:6]
+s[0] = 10fmt.Println("Reslice")
+	s1 := arr[:]
+	fmt.Println(s1)
+	s1 = s1[:5]
+	fmt.Println(s1)
+	s1 = s1[2:]
+	fmt.Println(s1)
+======================分隔符==========================
+fmt.Println("Reslice")
+	s1 := arr[:]
+	fmt.Println(s1)
+	s1 = s1[:5]
+	fmt.Println(s1)
+	s1 = s1[2:]
+	fmt.Println(s1)
+
+Reslice                 
+[0 1 2 3 4 5 6 7]       
+[0 1 2 3 4]             
+[2 3 4] 
+```
+
+- slice本身没有数据，是对底层array的一个view
+- arr的值变为[0,1,10,3,4,5,6,7]
+- slice上可以建立slice，都属于同一个array的view
+- 下标是针对自己的slice基础上
+
+
+
+### 扩展
+
+```go
+arr := [...]int{0,1,2,3,4,5,6,7}
+s1 := arr[2:6]
+s2 := s1[3:5]
+
+s1的值？{2，3，4，5}
+s2的值？{5，6}  单独取s1的下标6报错，但是取slice可以取原数组下标的
+```
+
+- s1的值为[2,3,4,5],s2的值为[5,6]
+- slice可以向后扩展，不可以向前扩展
+- s[i]不可以超越len(s)，向后扩展不可以超越底层cap(s)
+
+### slice的实现
+
+如下，=区域是实际区域，ptr，长度len，cap是=与+区域的长度
+
+--------======++++++++
+
+```go
+fmt.Println("Extending")
+	fmt.Println("arr = ", arr)
+	s3 := arr[2:6]
+	s4 := s3[3:5]
+	fmt.Printf("s3=%v,len(s3)=%d,cap(s3)=%d\n", s3, len(s3), cap(s3))
+	fmt.Printf("s4=%v,len(s4)=%d,cap(s4)=%d\n", s4, len(s4), cap(s4))
+
+Extending
+arr =  [0 1 2 3 4 5 6 7]
+s3=[2 3 4 5],len(s3)=4,cap(s3)=6
+s4=[5 6],len(s4)=2,cap(s4)=3
+
+```
+
+
+
+### 向slice添加元素
+
+```go
+fmt.Println("添加元素")
+	s5 := arr[2:6]
+	s6 := s5[3:5]
+	s7 := append(s6, 10)
+	s8 := append(s7, 11)
+	s9 := append(s8, 12)
+	fmt.Println("s7,s8,s9 = ", s7, s8, s9)
+	fmt.Println("arr = ", arr)
+}
+
+s7,s8,s9的值为？arr的值为？
+
+添加元素
+s7,s8,s9 =  [5 6 10] [5 6 10 11] [5 6 10 11 12]
+arr =  [0 1 2 3 4 5 6 10]
+```
+
+
+
+- 添加元素是如果超越cap，系统会重新分配更大的底层数组
+- 由于值传递的关系，必须接受append的返回值
+- s = append(s,val
+
+
+
+### 切片的操作
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("create slice")
+	var s []int //Zero value for slice is nil
+	for i := 0; i < 100; i++ {
+		printSlice(s)
+		s = append(s, 2*i+1)
+	}
+	fmt.Println(s)
+
+	s1 := []int{2, 4, 6, 8}
+	s2 := make([]int, 16)
+	s3 := make([]int, 10, 32)
+	printSlice(s1)
+	printSlice(s2)
+	printSlice(s3)
+
+	fmt.Println("copy slice")
+	copy(s2, s1)
+	printSlice(s2)
+
+	fmt.Println("delete element from slice")
+	s2 = append(s2[:3], s2[4:]...)
+	printSlice(s2)
+
+	fmt.Println("pop from front")
+	front := s2[0]
+	s2 = s2[1:]
+	fmt.Println(front)
+	printSlice(s2)
+
+	fmt.Println("pop from front")
+	tail := s2[len(s2)-1]
+	s2 = s2[:len(s2)-1]
+	fmt.Println(tail)
+	printSlice(s2)
+
+}
+
+func printSlice(s []int) {
+	fmt.Printf("%v,len=%d,cap=%d\n", s, len(s), cap(s))
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
