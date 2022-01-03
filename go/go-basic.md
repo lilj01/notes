@@ -686,9 +686,112 @@ func printSlice(s []int) {
 
 
 
+## 11.Map
 
 
 
+### 操作
+
+- 创建：make（map[string]int）
+- 获取元素：m[key]
+- key不存在时，获得Value类型的初始值
+- 用value，ok := m[key]来判断是否存在key
+- 用delete函数删除一个元素
+- 使用range遍历key，或者key，value对
+- 不保证遍历顺序，如需顺序，需手动对key排序
+- 使用len获得元素个数
+
+
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	m1 := map[string]string{
+		"name": "lilj",
+		"like": "tec",
+	}
+	m2 := make(map[string]int) //m2 == empty map
+	var m3 map[string]int      //m3 == nil
+	fmt.Println(m1, m2, m3)
+
+	fmt.Println("each map")
+	for k, v := range m1 {
+		fmt.Println(k, v)
+	}
+
+	fmt.Println("get map value")
+	name := m1["name"]
+	fmt.Println(name)
+
+	if x, ok := m1["x"]; ok {
+		fmt.Println(x)
+	} else {
+		fmt.Println("key does not exist")
+	}
+
+	fmt.Println("delete element")
+	delName, delOk := m1["name"]
+	fmt.Println(delOk, delName)
+	delete(m1, "name")
+	delName, delOk = m1["name"]
+	fmt.Println(delOk, delName)
+}
+
+```
+
+
+
+### map的key
+
+- map使用哈希表，必须可以比较相等
+- 除了slice，map，function的内建类型都可以作为key
+- Struct类型不包含上述字段，也可作为key
+- 不需要像java，考虑equals hashCode
+
+
+
+### 例题
+
+寻找最长不含有重复字符的子串
+
+例如：abcabcbb ---> abc   bbbbbb-->b  pwwkew -->wke
+
+
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println(lengthOfNoRepeatingSubStr("abcabccc"))
+	fmt.Println(lengthOfNoRepeatingSubStr("bbbbbb"))
+	fmt.Println(lengthOfNoRepeatingSubStr("pwwkew"))
+    fmt.Println(lengthOfNoRepeatingSubStr(""))
+    fmt.Println(lengthOfNoRepeatingSubStr("b"))
+	fmt.Println(lengthOfNoRepeatingSubStr("abcdef"))
+}
+
+func lengthOfNoRepeatingSubStr(s string) int {
+	lastOccurred := make(map[byte]int)
+	start := 0
+	maxLength := 0
+	for i, ch := range []byte(s) {
+		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
+			start = lastI + 1
+		}
+		//start开始，到i结束
+		if i-start+1 > maxLength {
+			maxLength = i - start + 1
+		}
+		lastOccurred[ch] = i
+	}
+	return maxLength
+}
+```
 
 
 
