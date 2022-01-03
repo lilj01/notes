@@ -813,27 +813,110 @@ func lengthOfNoRepeatingSubStr(s string) int {
 
 
 
+## 13.面向对象  结构体和方法
+
+- go语言仅支持封装，不支持继承和多态
+- go语言没有class，只有struct
+- 不论地址还是结构本身，一律使用.来访问成员
 
 
 
+### 结构的创建
+
+```go
+package main
+
+import "fmt"
+
+type treeNode struct {
+	value       int
+	left, right *treeNode
+}
+
+func createTreeNode(value int) *treeNode {
+	return &treeNode{value: value}
+}
+
+func main() {
+	var root treeNode
+
+	root = treeNode{value: 3}
+	root.left = &treeNode{}
+	root.right = &treeNode{5, nil, nil}
+	root.right.left = new(treeNode)
+	root.left.right = createTreeNode(2)
+	nodes := []treeNode{
+		{value: 3},
+		{},
+		{6, nil, &root},
+	}
+	fmt.Println(root, nodes)
+}
+
+```
 
 
 
+```go
+func createTreeNode(value int) *treeNode {
+	return &treeNode{value: value}
+}
+```
+
+- 使用自定义工厂函数
+- 注意返回了局部变量的地址，go中是可以的
 
 
 
+### 结构创建在堆上还是栈上？
+
+不需要知道，垃圾回收
 
 
 
+### 怎么给结构定义一个方法
+
+需要指明接收者
+
+```go
+func (node treeNode) print() {
+	fmt.Println(node.value)
+}
+```
 
 
 
+### 值传递，setXX方法如何解决
+
+```go
+×
+func (node treeNode) setValue(value int) {
+	node.value = value
+}
+
+√
+func (node *treeNode) setValue(value int) {
+	node.value = value
+}
+```
 
 
 
+### 值接受者vs指针接收者
+
+- 要改变内容必须使用指针接收者
+- 结构过大也考虑使用指针接收者
+- 一致性：（建议，非必须），如有指针接收者，最好全部保持一致
+- 值接收者是go语言特有
+- 值、指针接收者对调用者没有影响
 
 
 
+### 总结
+
+- 显式定义和命名方法接收者
+- 只有使用指针才可以改变结构内容
+- nil指针也能调用方法
 
 
 
