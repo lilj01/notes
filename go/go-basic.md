@@ -922,6 +922,14 @@ func (node *treeNode) setValue(value int) {
 
 
 
+## 14.封装
+
+- 名字一般使用CamelCase
+- 首字母大写：public  针对包
+- 首字母小写：private  针对包
+- 每个目录一个包，包名和目录名可以不一致
+- main包较特殊，包含可执行入口
+
 
 
 
