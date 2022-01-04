@@ -924,6 +924,10 @@ func (node *treeNode) setValue(value int) {
 
 ## 14.封装
 
+
+
+### 结构和结构方法
+
 - 名字一般使用CamelCase
 - 首字母大写：public  针对包
 - 首字母小写：private  针对包
@@ -942,33 +946,37 @@ func (node *treeNode) setValue(value int) {
 
 
 
-### 
+## 15.go语言的依赖管理
 
 
 
+- 依赖的概念  这里特指引入外围代码库
+- 依赖管理的三个阶段 ：GOPATH GOVENDOR,go mod
 
 
 
+### GOPATH  选修
+
+- 默认在用户目录/go  Linux unix ~/go  windows: %USERPROFILE%\go
+- 所有项目依赖都在GOPATH下，大
+- 历史：google将20亿行代码，900晚个文件放在一个repo
 
 
 
+### GOVERDOR 选修
+
+- 每个项目都有自己的verdor目录，存放第三方库
+- 大量第三方依赖管理工具：glide，dep，go dep，，，，
 
 
 
+### go mod
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 由go命令统一的管理，用户不必关心目录结构
+- 初始化 go mod init
+- 增加依赖：1：go get   2：import 自动修改
+- 更新依赖：go get [@v] , go mod tidy去除多余的依赖
+- 将项目迁移到go mod: 1:go mod init 2 :go build ./...
 
 
 
