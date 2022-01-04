@@ -977,22 +977,25 @@ func (node *treeNode) setValue(value int) {
 - 增加依赖：1：go get   2：import 自动修改
 - 更新依赖：go get [@v] , go mod tidy去除多余的依赖
 - 将项目迁移到go mod: 1:go mod init 2 :go build ./...
+- go build ./...不产生编译文件，检查作用 go install ./...产生
 
 
 
+## 16.接口
 
-
-go build ./...不产生编译文件，检查作用
-
-go install ./...产生
-
+Something that can do
 
 
 
+![](https://bclz_xc.gitee.io/lilj_01-static/go/%E5%A4%A7%E9%BB%84%E9%B8%AD.jpg)
 
+### duck typing
 
+大黄鸭是鸭子吗?
 
-
+- “像鸭子走路，像鸭子叫（长的像鸭子），那么就是鸭子”
+- 描述事物的外部行为而非内部结构
+- 严格说go属于结构化类型系统，类似duck typing
 
 
 
