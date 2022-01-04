@@ -982,6 +982,10 @@ func (node *treeNode) setValue(value int) {
 
 
 
+go build ./...不产生编译文件，检查作用
+
+go install ./...产生
+
 
 
 
