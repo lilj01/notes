@@ -938,10 +938,11 @@ func (node *treeNode) setValue(value int) {
 
 - 定义别名
 - 使用组合
+- 使用内嵌 Embedding：需要省下许多代码
 
 
 
-
+### 
 
 
 
