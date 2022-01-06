@@ -200,7 +200,11 @@ Something that can do
 
 
 
+### 常用系统接口
 
+- Stringer  String()  类似 java 中 toString()
+- Reader Read(p []bytes)(n int,err error)
+- Writer Write(p []bytes)(n int,err error)
 
 
 
