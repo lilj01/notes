@@ -261,3 +261,37 @@ func main() {
 - 斐波那契数列
 - 为函数实现接口
 - 使用函数来遍历二叉树
+- 更为自然，不需要修饰如何访问自由变量
+- 没有lambda表达式，但是有匿名函数
+
+
+
+## 6.资源管理与出错管理
+
+### defer
+
+- 底层有个栈，先进后出
+- 可用于资源的关闭，类比java的finally
+- 想到关闭就可以写上，不需要像java等着在finally中写
+
+```go
+package main
+
+import "fmt"
+
+func tryDefer() {
+	defer fmt.Println(1)
+	defer fmt.Println(2)
+	fmt.Println(3)
+}
+
+func main() {
+	tryDefer()
+}
+
+result：
+3
+2
+1
+```
+
