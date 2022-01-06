@@ -273,6 +273,9 @@ func main() {
 - 底层有个栈，先进后出
 - 可用于资源的关闭，类比java的finally
 - 想到关闭就可以写上，不需要像java等着在finally中写
+- OPen、Colse
+- Lock/Unlock
+- PrintHeader/PrintFooter
 
 ```go
 package main
@@ -293,5 +296,36 @@ result：
 3
 2
 1
+```
+
+### 错误处理
+
+#### panic　
+
+​		panic（运行时恐慌）是一种只会在程序运行时才回抛出来的异常。在panic被抛出之后，如果没有在程序里添加任何保护措施的话，程序就会在打印出panic的详情，终止运行。
+
+
+
+#### 处理异常
+
+```go
+if err != nil {
+		if pathError, ok := err.(*os.PathError); !ok {
+			panic(err)
+		} else {
+			fmt.Printf("%s,%s,%s\n",
+				pathError.Op,
+				pathError.Path,
+				pathError.Err)
+		}
+	}
+```
+
+
+
+#### 自定义异常
+
+```go
+errors.New("coutom error")
 ```
 
