@@ -208,3 +208,56 @@ Something that can do
 
 
 
+## 5.函数与闭包
+
+
+
+### 函数是编程vs函数指针
+
+- 函数是一等公民：参数，变量，返回值都可以是函数
+- 高阶函数
+- 函数 ->闭包
+
+
+
+### “正统”函数式编程
+
+- 不可变性：不能有状态，只有常量和函数
+- 函数只能有一个参数
+
+
+
+### 闭包
+
+函数体
+
+局部变量  自由变量（链接变量） 
+
+```go
+package main
+
+import "fmt"
+
+func adder() func(int) int {
+	sum := 0
+	return func(i int) int {
+		sum += i
+		return sum
+	}
+}
+
+func main() {
+	a := adder()
+	for i := 0; i < 10; i++ {
+		fmt.Printf("0 + 1 +...+%d = %d\n", i, a(i))
+	}
+}
+```
+
+
+
+### go语言闭包的应用
+
+- 斐波那契数列
+- 为函数实现接口
+- 使用函数来遍历二叉树
