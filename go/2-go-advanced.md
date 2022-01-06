@@ -329,3 +329,10 @@ if err != nil {
 errors.New("coutom error")
 ```
 
+
+
+### error vs panic
+
+- 意料之中的使用error，如文件打不开
+- 意料之外的，使用panic。如：数组越界
+
