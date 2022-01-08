@@ -336,3 +336,159 @@ errors.New("coutom error")
 - 意料之中的使用error，如文件打不开
 - 意料之外的，使用panic。如：数组越界
 
+
+
+## 7.测试
+
+
+
+### 传统测试
+
+- 测试数据和测试逻辑混在一起
+
+  ```java
+  @Test
+  public void testAdd(){
+  	assertEquals(3,add(1,2))
+      assertEquals(3,add(2,1))
+      assertEquals(4,add(2,2))
+      assertEquals(10,add(8,2))
+      assertEquals(10,add(3,7))
+  }
+  ```
+
+- 出错信息不明确
+
+- 一旦一个数据出错测试全部结束
+
+- go语言使用传统表格测试
+
+- go测试文件的文件名 test_xxx，测试函数参数（t *testing.T）
+
+- 命令  go test .  执行测试函数
+
+  ```go
+  package add
+  
+  import (
+  	"math"
+  	"testing"
+  )
+  
+  func TestAdd(t *testing.T) {
+  	tests := []struct {
+  		a, b, c int32
+  	}{
+  		{1, 2, 3},
+  		{0, 2, 2},
+  		{0, 0, 0},
+  		{-0, 1, 0},
+  		{math.MaxInt32, 1, math.MaxInt32},
+  	}
+  
+  	for _, test := range tests {
+  		if actual := add(test.a, test.b); actual != test.c {
+  			t.Errorf(
+  				"add(%d,%d); got %d; expected %d",
+  				test.a, test.b, actual, test.c,
+  			)
+  		}
+  	}
+  }
+  
+  func add(a, b int32) int32 {
+  	return a + b
+  }
+  ```
+
+  
+
+  测试最长字符串函数
+
+  ```go
+  package test
+  
+  import "testing"
+  
+  func TestSubstr(t *testing.T) {
+  
+  	tests := []struct {
+  		s   string
+  		ans int
+  	}{
+  		//Normal cases
+  		{"abcabccc", 3},
+  		{"pwwkew", 3},
+  
+  		//Edge cases
+  		{"", 0},
+  		{"b", 1},
+  		{"bbbbbb", 1},
+  		{"abcabcabcd", 4},
+  
+  		//Chinese support
+  		{"我爱go语言", 6},
+  		{"一二三一二", 3},
+  	}
+  
+  	for _, test := range tests {
+  		actual := LengthOfNoRepeatingSubStr(test.s)
+  		if actual != test.ans {
+  			t.Errorf("Got %d for input %s; expected %d", actual, test.s, test.ans)
+  		}
+  	}
+  
+  }
+  func LengthOfNoRepeatingSubStr(s string) int {
+  	lastOccurred := make(map[rune]int)
+  	start := 0
+  	maxLength := 0
+  	for i, ch := range []rune(s) {
+  		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
+  			start = lastI + 1
+  		}
+  		//start开始，到i结束
+  		if i-start+1 > maxLength {
+  			maxLength = i - start + 1
+  		}
+  		lastOccurred[ch] = i
+  	}
+  	return maxLength
+  }
+  
+  //性能测试  go test -bench .
+  func BenchmarkSubstr(b *testing.B) {
+  	s := "一二三四五六七八九十一"
+  	ans := 10
+  
+  	for i := 0; i < b.N; i++ {
+  		actual := LengthOfNoRepeatingSubStr(s)
+  		if actual != ans {
+  			b.Errorf("Got %d for input %s; expected %d", actual, s, ans)
+  		}
+  	}
+  
+  }
+  ```
+
+  
+
+### 表格驱动测试
+
+- 明确了出错信息
+- 分离了测试数据和测试逻辑
+- 可以部分失败
+- go语言的语法使得我们更易实践表格驱动测试
+
+
+
+
+
+-  go test -coverprofile c.out
+- go test -bench . -cpuprofile cpu.out
+- go tool pporf cpu.out
+
+
+
+### http测试
+
