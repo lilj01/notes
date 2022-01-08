@@ -557,13 +557,76 @@ func main() {
 
 
 
+## 10.http标准库
+
+- 使用http客户端发送请求
+- 使用http.Client控制请求头部等
+- 使用httputil简化工作
 
 
 
 
 
+## 11.JSON
 
+- JSON数据格式
+- 结构体的tag
+- JSON marshal与Unmarshal，数据类型
 
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type OrderItem struct {
+	ID    string  `json:"id"`
+	Name  string  `json:"name,omitempty"`
+	Price float64 `json:"price"`
+}
+
+type Order struct {
+	ID         string     `json:"id"`
+	Item       *OrderItem `json:"item"`
+	Quantity   int        `json:"quantity"`
+	TotalPrice float64    `json:"totalPrice"`
+}
+
+func main() {
+	marshal()
+	unmarshal()
+}
+
+func marshal() {
+	o := Order{
+		ID:         "1234",
+		Quantity:   3,
+		TotalPrice: 30,
+		Item: &OrderItem{
+			ID:    "1111",
+			Name:  "",
+			Price: 15,
+		},
+	}
+	jsonOrder, err := json.Marshal(o)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", jsonOrder)
+}
+
+func unmarshal() {
+	s := `{"id":"1234","item":{"id":"1111","price":15},"quantity":3,"totalPrice":30}`
+	var O Order
+	err := json.Unmarshal([]byte(s), &O)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", O)
+}
+```
 
 
 
